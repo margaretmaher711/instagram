@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/user_model.dart';
 
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -24,14 +25,15 @@ class AuthController {
           ) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
-        _firestore.collection('users').doc(cred.user!.uid).set({
-          'username': userName,
-          'uid': cred.user!.uid,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'following': []
-        });
+        UserModel user = UserModel(
+            userName: userName,
+            uid: cred.user!.uid,
+            email: email,
+            bio: bio,
+            following: [],
+            followers: [],
+            password: password);
+        _firestore.collection('users').doc(cred.user!.uid).set(user.toJson());
         res = 'success';
         print('cred$cred');
       }

@@ -7,6 +7,7 @@ import 'package:instagram/utils/utils.dart';
 import '../components/text_field_input.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -60,8 +61,16 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(
           height: 24,
         ),
+<<<<<<< HEAD
         InkWell(
           onTap: () => logInUser(),
+=======
+        InkWell(onTap: ()=>     Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        ),
+>>>>>>> 12d2703c8f35698780fdd84cb7d1cb0bae249682
           child: Container(
             width: double.infinity,
             alignment: Alignment.center,

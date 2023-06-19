@@ -4,6 +4,9 @@ import 'package:instagram/resources/auth_controller.dart';
 import 'package:instagram/utils/utils.dart';
 
 import '../components/text_field_input.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
 
@@ -126,7 +129,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ? const CircularProgressIndicator(
                           color: primaryColor,
                         )
-                      : const Text('Log in'),
+                      : const Text('Sign up'),
                 ),
               ),
               Flexible(
@@ -152,6 +155,14 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     if (res != 'success') {
       showSnackBar(res, context);
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => ResponsiveLayout(
+                  webScreenLayout: const WebScreenLayout(),
+                  mobileScreenLayout: const MobileScreenLayout(),
+                )),
+      );
     }
   }
 }

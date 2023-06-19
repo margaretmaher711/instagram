@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:instagram/resources/auth_controller.dart';
 import 'package:instagram/screens/signup_screen.dart';
+import 'package:instagram/utils/utils.dart';
 
 import '../components/text_field_input.dart';
 import '../utils/colors.dart';
@@ -16,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
           : const EdgeInsets.symmetric(horizontal: 32),
       child: Column(children: [
         Flexible(
-          child: Container(),
           flex: 2,
+          child: Container(),
         ),
         //logo
         SvgPicture.asset(
@@ -52,11 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
         TextFieldInput(
           controller: _passwordController,
           hintTxt: 'Enter your password',
-          obsecure: true,        ),
+          obsecure: true,
+        ),
         const SizedBox(
           height: 24,
         ),
         InkWell(
+          onTap: () => logInUser(),
           child: Container(
             width: double.infinity,
             alignment: Alignment.center,
@@ -67,21 +72,25 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               color: blueColor,
             ),
-            child: Text('Log in'),
+            child: _isLoading
+                ? const CircularProgressIndicator(
+                    color: primaryColor,
+                  )
+                : const Text('Log in'),
           ),
         ),
         Flexible(
-          child: Container(),
           flex: 2,
+          child: Container(),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: const Text(
                 'Dont have an account?',
               ),
-              padding: const EdgeInsets.symmetric(vertical: 8),
             ),
             GestureDetector(
               onTap: () {
@@ -92,18 +101,34 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },
               child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: const Text(
                   ' Signup.',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(vertical: 8),
               ),
             ),
           ],
         ),
       ]),
     )));
+  }
+
+  logInUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthController().logInUser(
+        email: _emailController.text.toString(),
+        password: _passwordController.text.toString());
+    if (res == 'success') {
+    } else {
+      showSnackBar(res, context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 }

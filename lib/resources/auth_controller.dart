@@ -19,7 +19,6 @@ class AuthController {
       if (userName.isNotEmpty ||
               email.isNotEmpty ||
               password.isNotEmpty ||
-              password.isNotEmpty ||
               bio.isNotEmpty
           // || file != null
           ) {
@@ -46,6 +45,30 @@ class AuthController {
       }
 
       print(e.code);
+      // res = e.toString();
+    }
+    return res;
+  }
+
+  Future<String> logInUser({
+    required String email,
+    required String password,
+  }) async {
+    String res = 'some error';
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        UserCredential cred = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = 'success';
+        print('cred$cred');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        res = 'There user is not identified.';
+      } else if (e.code == 'wrong-password') {
+        res = 'The password is invalid or the user does not have this password.';
+      }
+      print(e);
       // res = e.toString();
     }
     return res;

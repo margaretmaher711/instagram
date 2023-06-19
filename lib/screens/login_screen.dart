@@ -5,6 +5,9 @@ import 'package:instagram/screens/signup_screen.dart';
 import 'package:instagram/utils/utils.dart';
 
 import '../components/text_field_input.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/colors.dart';
 import '../utils/dimensions.dart';
 import 'home_screen.dart';
@@ -61,16 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
         const SizedBox(
           height: 24,
         ),
-<<<<<<< HEAD
+
         InkWell(
-          onTap: () => logInUser(),
-=======
-        InkWell(onTap: ()=>     Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        ),
->>>>>>> 12d2703c8f35698780fdd84cb7d1cb0bae249682
+          onTap: () => loginUser(),
           child: Container(
             width: double.infinity,
             alignment: Alignment.center,
@@ -125,19 +121,58 @@ class _LoginScreenState extends State<LoginScreen> {
     )));
   }
 
-  logInUser() async {
+  void loginUser() async {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthController().logInUser(
-        email: _emailController.text.toString(),
-        password: _passwordController.text.toString());
+    String res = await AuthController().loginUser(
+        email: _emailController.text, password: _passwordController.text);
+    print('res$res');
     if (res == 'success') {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout(),
+            ),
+          ),
+          (route) => false);
+
+      setState(() {
+        _isLoading = false;
+      });
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       showSnackBar(res, context);
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
+// logInUser() async {
+//   setState(() {
+//     _isLoading = true;
+//   });
+//   String res = await AuthController().loginUser(
+//       email: _emailController.text.toString(),
+//       password: _passwordController.text.toString());
+//   if (res == 'success') {
+//     Navigator.of(context).pushAndRemoveUntil(
+//         MaterialPageRoute(
+//           builder: (context) =>  ResponsiveLayout(
+//             mobileScreenLayout: MobileScreenLayout(),
+//             webScreenLayout: WebScreenLayout(),
+//           ),
+//         ),
+//             (route) => false);
+//
+//     setState(() {
+//       _isLoading = false;
+//     });
+//   } else {
+//     showSnackBar(res, context);
+//   }
+//   setState(() {
+//     _isLoading = false;
+//   });
+// }
 }

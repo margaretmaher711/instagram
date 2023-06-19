@@ -160,7 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
         MaterialPageRoute(
             builder: (context) => ResponsiveLayout(
                   webScreenLayout: const WebScreenLayout(),
-                  mobileScreenLayout: const MobileScreenLayout(),
+                  mobileScreenLayout:  MobileScreenLayout(),
                 )),
       );
     }

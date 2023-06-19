@@ -52,26 +52,26 @@ class AuthController {
     return res;
   }
 
-  Future<String> logInUser({
+  // logging in user
+  Future<String> loginUser({
     required String email,
     required String password,
   }) async {
-    String res = 'some error';
+    String res = "Some error Occurred";
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        UserCredential cred = await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-        res = 'success';
-        print('cred$cred');
+        // logging in user with email and password
+        await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        res = "success";
+        print('email.isNotEmpty');
+      } else {
+        res = "Please enter all the fields";
       }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        res = 'There user is not identified.';
-      } else if (e.code == 'wrong-password') {
-        res = 'The password is invalid or the user does not have this password.';
-      }
-      print(e);
-      // res = e.toString();
+    } catch (err) {
+      return err.toString();
     }
     return res;
   }

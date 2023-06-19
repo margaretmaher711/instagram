@@ -22,10 +22,14 @@ class _HomeScreenState extends State<HomeScreen> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
+            print(snapshot.connectionState);
+            print(snapshot.hasData);
+
             if (snapshot.hasData) {
+              print(snapshot.data);
               return ResponsiveLayout(
                 webScreenLayout: const WebScreenLayout(),
-                mobileScreenLayout: const MobileScreenLayout(),
+                mobileScreenLayout:  MobileScreenLayout(),
               );
             } else if (snapshot.hasError) {
               return Text(snapshot.error.toString());
